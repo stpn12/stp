@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<style media="screen">
+  .main-raised,
+  footer {
+    position: relative;
+    top: 25vh;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="main main-raised">
+  <div class="section">
+    <div class="container">
+
+      <form novalidate enctype='multipart/form-data' method="post" id="main_form">
+        {% csrf_token %}
+
+        {% if form.errors %}
+          {% for error in form.errors %}
+            <div class="alert alert-danger">
+              <div class="container">
+                <div class="alert-icon">
+                  <i class="material-icons">error_outline</i>
+                </div>
+                <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+                  <span aria-hidden="true">
+                    <i class="material-icons">clear</i>
+                  </span>
+                </button>
+                <b>Error Alert:</b>
+                {{ error }} 
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <!-- ServiceCategory -->
+        <div class="form-group">
+          <legend class="col-form-label">
+            Service Category
+          </legend>
+
+          {% for choice in form.ServiceCategory.field.queryset %}
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" name="ServiceCategory" value="{{ choice.id }}"
+                {% if choice in service.ServiceCategory.all %} checked="checked" {% endif %}>
+              {{choice}}
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Service -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Service.label }}</label>
+          {{ form.Service }}
+        </div>
+
+        <!-- Contents -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Contents.label }}</label>
+          {{ form.Contents }}
+        </div>
+
+
+        <!-- button -->
+        <div class="text-center mt-5">
+          <input type="submit" name="" value="Submit" class="mb-5 mx-auto btn btn-outline-primary">
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

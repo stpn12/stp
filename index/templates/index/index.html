@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<style>
+  .form-check{
+    line-height: 3.2;
+  }
+</style>
+{% endblock %}
+
+{% block header %}
+<div class="page-header header-filter purple-filter" data-parallax="true"
+style="background-image: url('{% static 'img/bdsp2.jpg' %}'); transform: translate3d(0px, 0px, 0px);">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="brand text-center">
+          <h1>Moscow City Hack</h1>
+          <h3 class="title text-center">"WEB-сервис проверки поддельных новостей (fake news)"</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+<div class="main main-raised">
+  <div class="section section-basic">
+    <div class="container">
+    
+      <!--foto-->
+      <form class="" action="{% url 'foto' %}" method="post">{% csrf_token %}
+        <section class="jumbotron text-center">
+          <div class="container">
+            <h1 class="jumbotron-heading">Добавьте файл *.txt для анализа</h1>
+            <p class="lead text-muted"></p>
+            <form method="POST">
+            <div class="input-group mb-3">
+
+            </div>
+            <p>
+              <form class="" action="{% url 'foto' %}" method="post">{% csrf_token %}
+                <input type="submit" name="выбрать файл" value="выбрать файл" class="mx-auto btn btn-primary btn-round"> 
+              </form>  
+            </p>
+            </form>
+          </div>
+        </section>  
+        <form class="" action="{% url 'list' %}" method="post">{% csrf_token %}
+          <section class="jumbotron text-center">
+            <div class="container">
+              <h1 class="jumbotron-heading">Запустите нейронную сеть для анализа новости</h1>
+              <p class="lead text-muted"></p>
+              <form method="POST">
+              <div class="input-group mb-3">
+              </div>
+              <p>
+                <input type="submit" name="анализировать" value="анализировать" class="mx-auto btn btn-primary btn-round"> 
+              </p>
+              </form>
+            </div>
+          </section>  
+        <!-- button -->
+        <div class="input-group mb-3">
+        </div>
+        <div class="text-center mt-5">  
+        <!-- 
+          <button type="submit" name="submit" value="обучить модель" class="btn btn-primary my-2">Обучить модель</button>
+        --> 
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $("#checkAll").change(function () {
+    $("input:checkbox").prop("checked", $(this).prop("checked"))
+  })
+</script>
+{% endblock %}

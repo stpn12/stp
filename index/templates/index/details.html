@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<style>
+  #details-header{
+    background-image: url('{% static "img/trianglify3.png" %}');
+    background-position: center center;
+    background-size: cover;
+    transform:translate3d(0px, 0px, 0px);
+    min-height:50vh;
+    padding: 20vh 0vh;
+    z-index: 2;
+    
+  }
+</style>
+{% endblock %}
+
+{% block header %}
+<div class="blue-filter" data-parallax="true" id="details-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 ml-auto mr-auto">
+        <div class="brand text-center">
+          <h1>{{ org.Name | upper }}</h1>
+          <h3 class="lead">{{ org.Region }}, {{ org.Address }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+<!-- General Information -->
+<div class="main main-raised">
+  <div class="section">
+    <div class="container">
+      {% if user.is_authenticated %}
+      <div class="row">
+        <!-- edit-icon -->
+        <a class="btn btn-primary btn-just-icon btn-round ml-auto" href="{% url 'editPage' org.id %}">
+          <i class="material-icons">
+            edit
+          </i>
+        </a>
+
+        <!-- Button trigger modal -->
+        <button class="btn btn-primary btn-just-icon btn-round mr-4">
+          <i class="material-icons" data-toggle="modal" data-target="#{{ org.id }}">
+            delete
+          </i>
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="{{ org.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn btn-primary" href="{% url 'org_delete' org.id %}">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      {% endif %}
+
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <tbody>
+              <tr>
+                  <th class="lead" scope="row">Registration Date</th>
+                  <td>{{ org.RegistrationDate|date:"Y-m-d" }}</td>
+              </tr>
+              <tr>
+                  <th class="lead" scope="row">Industry</th>
+                  <td>
+                    {% for industry in org.Industry.all %}
+                    <span class="badge badge-pill badge-danger">{{ industry.Name }}</span>
+                    {% endfor %}
+                  </td>
+              </tr>
+
+              <tr>
+                <th class="lead" scope="row">Service</th>
+              <td>
+                {% for service in org.ServiceCategory.all %}
+
+                <span class="badge badge-pill badge-primary">{{ service.Name }} </span>
+                <!-- <span>{{ service.Name }}{% if not forloop.last %}, {% endif %} </span> -->
+
+                {% endfor %}
+              </td>
+            </tr>
+
+            <tr>
+              <th class="lead" scope="row">Target Company</th>
+            <td>
+              {% for size in org.TargetCompanySize.all %}
+              <span class="badge badge-pill badge-info">{{ size.Size }} </span>
+              {% endfor %}
+            </td>
+          </tr>
+
+            <tr>
+              <th class="lead" scope="row">PR</th>
+              <td>{{ org.PR }}</td>
+            </tr>
+            <tr>
+              <th class="lead" scope="row">Affiliation</th>
+              <td>{{ org.Affiliation }}</td>
+            </tr>
+            <tr>
+              <th class="lead" scope="row">Business Hour</th>
+              <td>{{ org.OfficeHour }}</td>
+            </tr>
+            <tr>
+              <th class="lead" scope="row">URL</th>
+              <td>
+                <a href="{{ org.Url }}">{{ org.Url }}</a>
+              </td>
+            </tr>
+            <tr>
+              <th class="lead" scope="row">Contact</th>
+              <td>
+                <span>{{ org.ContactPerson }}</span>
+                <span>,&nbsp; Email:{{ org.Email }}</span>
+                <span>,&nbsp; Tel:{{ org.Telephone }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Service -->
+<div class="main main-raised mt-5">
+  <div class="section pt-4">
+    <div class="container">
+      <h2 class="title text-center">Service</h2>
+      {% if user.is_authenticated %}
+      <div class="row">
+        <a class="btn btn-just-icon btn-primary btn-round ml-auto mr-4" href="{% url 'service_create' org.id %}">
+          <i class="material-icons">
+            add
+          </i>
+        </a>
+      </div>
+      {% endif %}
+
+      <div class="table-responsive">
+        <table class="table table-hover mt-5">
+          <thead>
+            <tr class="text-center">
+              <th class="lead" scope="col">Service Category</th>
+              <th class="lead" scope="col">Title</th>
+              <th class="lead" scope="col">Contents</th>
+              <th class="lead" scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if services %}
+            {% for service in services %}
+            <tr>
+              <td>
+                {% for eachservice in service.ServiceCategory.all %}
+                <span class="badge badge-pill badge-primary">{{ eachservice.Name }}</span>
+                {% endfor %}</td>
+              <td>{{ service.Service }}</td>
+              <td>{{ service.Contents }}</td>
+              <td>
+                {% if user.is_authenticated %}
+                <div class="text-right">
+                  <a class="btn btn-primary btn-just-icon btn-round"
+                    href="{% url 'service_update' service.id %}">
+                    <i class="material-icons">
+                      edit
+                    </i>
+                  </a>
+
+                  <!-- Button trigger modal -->
+                  <button class="btn btn-primary btn-just-icon btn-round">
+                    <i class="material-icons" data-toggle="modal" data-target="#{{ service.id }}">
+                      delete
+                    </i>
+                  </button>
+                </div>
+                  <!-- Modal -->
+                  <div class="modal fade" id="{{ service.id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">Confirm Deletion</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <a class="btn btn-primary" href="{% url 'service_delete' service.id %}">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Experience -->
+<div class="main main-raised mt-5">
+  <div class="section pt-4">
+    <div class="container">
+      <h2 class="title text-center">Support Experience </h2>
+
+      {% if user.is_authenticated %}
+      {% if experiences %}
+      {% for experience in experiences %}
+      <div class="row">
+        <a class="btn btn-primary btn-just-icon btn-round ml-auto mr-4" href="{% url 'experience_update' experience.id %}">
+          <i class="material-icons">
+            edit
+          </i>
+        </a>
+
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="row">
+        <a class="btn btn-primary btn-just-icon btn-round ml-auto mr-4" href="{% url 'experience_create' org.id %}">
+          <i class="material-icons">
+            add
+          </i>
+        </a>
+      </div>
+      {% endif %}
+      {% endif %}
+
+      <div class="table-responsive">
+        <table class="table table-hover mt-5">
+          <thead>
+            <tr class="text-center">
+              <th class="lead" scope="col">Year</th>
+              <th class="lead" scope="col">Large</th>
+              <th class="lead" scope="col">Medium</th>
+              <th class="lead" scope="col">Small & Micro</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            {% for experience in experiences %}
+            <tr>
+              <td>{{ experience.Year }}</td>
+              <td>{{ experience.Large }}</td>
+              <td>{{ experience.Medium }}</td>
+              <td>{{ experience.SmallandMicro }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Case -->
+<div class="main main-raised mt-5">
+  <div class="section pt-4">
+    <div class="container">
+      <h2 class="title text-center">Main Achievement</h2>
+
+      {% if user.is_authenticated %}
+      <div class="row">
+        <a class="btn btn-just-icon btn-round btn-primary ml-auto mr-4" href="{% url 'case_create' org.id %}">
+          <i class="material-icons">
+            add
+          </i>
+        </a>
+      </div>
+      {% endif %}
+
+      <div class="table-responsive">
+        <table class="table table-hover mt-5">
+          <thead>
+            <tr class="text-center">
+              <th class="lead" scope="col">Service Category</th>
+              <th class="lead" scope="col">Service</th>
+              <th class="lead" scope="col">Achievement</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if cases %}
+            {% for case in cases %}
+            <tr>
+              <td>{% for eachcase in case.ServiceCategory.all %}
+                <span class="badge badge-primary badge-pill">{{ eachcase.Name }}</span>
+                {% endfor %}
+              </td>
+              <td>{{ case.Contents }}</td>
+              <td>{{ case.Result }}</td>
+              {% if user.is_authenticated %}
+              <td>
+
+                <div class="text-right">
+                  <a class="btn btn-primary btn-just-icon btn-round"
+                    href="{% url 'case_update' case.id %}">
+                    <i class="material-icons">
+                      edit
+                    </i>
+                  </a>
+
+                  <!-- Button trigger modal -->
+                  <button class="btn btn-primary btn-just-icon btn-round">
+                    <i class="material-icons" data-toggle="modal" data-target="#{{ case.id }}">
+                      delete
+                    </i>
+                  </button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="{{ case.id }}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Confirm Deletion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a class="ml-auto mr-2" href="{% url 'case_delete' case.id %}">
+                          <button type="button" class="btn btn-primary">
+                            Delete
+                          </button>
+                        </a>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              <td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+      </!-->
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function() {
+    BrowserDetect.init();
+    if (window_width >= 768) {
+      big_image = $('#details-header[data-parallax="true"]');
+      if (big_image.length != 0) {
+        $(window).on('scroll', materialKit.checkScrollForParallax);
+      }
+  
+    }
+  
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<style media="screen">
+#list_main{
+  min-height:80vh;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="table-responsive mt-5" id="list_main">
+  <table class="table table-hover2 mt-5">
+  <thead>
+    <tr>
+      <th scope="col">Результаты анализа новостей на достоверность:</th>
+    </tr>
+  </thead>
+  </table>
+<table class="table table-hover mt-5">
+  <thead>
+    <tr>
+      <th scope="col"> Файл </th>
+      <!-- <th scope="col">Информация</th> -->
+      <!-- <th scope="col">Анализ</th> -->
+      <th scope="col">Заключение</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <!-- <th scope=""-->
+      </td>
+     
+    </tr>
+    <tr>
+      <td>
+        {% for query in Names %}
+        <!-- <span class="badge badge-pill badge-primary">{{ query }}</span> -->
+        <li>{{ query }}</li>
+        {% endfor %} 
+        <!-- {% for query in query_result %}
+        <span class="badge badge-pill badge-primary">{{ query.Name }}</span>
+        {% endfor %}  -->
+      </td>
+      <td>
+        {% for query in Infos %}
+        <!-- <span class="badge badge-pill badge-primary">{{ query }}</span> -->
+        <li>{{ query }}</li>
+        {% endfor %}
+        <!-- {% for query in query_result %}
+        <span class="badge badge-pill badge-primary">{{ query.Name }}</span>
+        {% endfor %}  -->
+      </td>
+      <td>
+        {% for query in Names %}
+        <!-- <span class="badge badge-pill badge-primary">{{ query }}</span> -->
+        <!-- <li>{{ query }}</li> -->
+        {% endfor %} 
+        <!-- {% for query in query_result %}
+        <span class="badge badge-pill badge-primary">{{ query.Name }}</span>
+        {% endfor %} -->
+      </td>
+      <td>
+        {% for query in Names %}
+        <!-- <span class="badge badge-pill badge-primary">{{ query }}</span> -->
+        <!-- <li>{{ query }}</li> -->
+        {% endfor %} 
+        <!-- {% for query in query_result %}
+        <span class="badge badge-pill badge-primary">{{ query.Name }}</span>
+        {% endfor %} -->
+      </td>
+      <td>
+        {% for query in Names %}
+        <!-- <span class="badge badge-pill badge-primary">{{ query }}</span> -->
+        <!-- <li>{{ query }}</li> -->
+        <!-- {% endfor %}  -->
+        <!-- {% for query in query_result %}
+        <span class="badge badge-pill badge-primary">{{ query.Name }}</span>
+        {% endfor %} -->
+      </td>
+    </tr>
+
+    <!-- {% for query in query_result %}
+      <thead>
+        <tr>
+          <td>{{ query.Name }}</td>
+        </tr>
+      </thead>    
+    {% endfor %}  -->
+
+    <!-- {% for query in query_result %}
+      <tr>
+        <td>{{ query.Name }}</td>
+        <td>{{ query.Region }}</td>
+        <td>
+          {% for industry in query.Industry.all %}
+          <span class="badge badge-pill badge-danger">{{ industry.Name }}</span>
+          {% endfor %}
+        </td>
+        <td>
+          {% for service in query.ServiceCategory.all %}
+            <span class="badge badge-pill badge-primary">{{ service.Name }}</span>
+
+          {% endfor %}
+        </td>
+        <td>
+          <a href="{% url 'details' query.id %}">
+            {{ query.Name }}
+          </a>
+        </td>
+      </tr>
+    {% endfor %} -->
+  </tbody>
+</table>
+</div>
+{% endblock %}

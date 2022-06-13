@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+<style>
+   #details-header{
+     background-image: url('{% static "img/trianglify3.png" %}');
+     background-position: center center;
+     background-size: cover;
+     transform:translate3d(0px, 0px, 0px);
+     min-height:50vh;
+     padding: 20vh 0vh;
+     z-index: 2;
+     
+   }
+ </style>
+{% endblock %}
+
+{% block content %}
+<div class="table-responsive mt-5" id="list_main">
+   <table class="table table-hover2 mt-5">
+   <thead>
+     <tr>
+       <th scope="col"></th>
+     </tr>
+   </thead>
+   </table>
+   <tbody>
+      <h1> Загрузите файл новости *.txt:</h1>
+      <form method="post" enctype="multipart/form-data">
+         {% csrf_token %}
+         {{ form.as_p }}
+      <button type="submit">ЗАГРУЗИТЬ</button>
+      </form>
+   </tbody>
+</div>
+{% endblock %}

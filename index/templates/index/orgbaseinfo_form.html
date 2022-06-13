@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block style %}
+{% load static %}
+{% endblock %}
+
+{% block content %}
+
+<div class="main main-raised" style="margin-top:18vh;">
+  <div class="section">
+    <div class="container">
+
+      <form action="" method="post" id="main_form">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        {% for error in form.errors %}
+        <div class="alert alert-danger">
+          <div class="container">
+            <div class="alert-icon">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+              <span aria-hidden="true">
+                <i class="material-icons">clear</i>
+              </span>
+            </button>
+            <b>Error Alert:</b>
+            {{ error }} 
+          </div>
+        </div>
+        {% endfor %}
+
+
+        {% endif %}
+        <!-- Registration Date -->
+        <div class="form-group">
+          <label class="label-control">{{form.RegistrationDate.label}}</label>
+          {{ form.RegistrationDate }}
+
+        </div>
+
+        <!-- Name -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Name.label }}</label>
+          {{ form.Name }}
+        </div>
+
+        <!-- Region -->
+        <fieldset class="form-group">
+          <legend class="col-form-label">
+            Region
+          </legend>
+          {% for choice in form.Region.field.choices %}
+          <div class="form-check form-check-radio form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="radio" name="Region" id="id_Region" value="{{choice.0}}"
+                {% if choice.0 in org.Region %} checked="checked" {% endif %}>
+              {{choice.0}}
+              <span class="circle">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+          {% endfor %}
+        </fieldset>
+
+        <!-- Address -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Address.label }}</label>
+          {{ form.Address }}
+        </div>
+
+
+        <!-- Industry -->
+        {% for error in form.Industry.error %}
+        {{ error }}
+        {% endfor %}
+        <div class="form-group">
+          <legend class="col-form-label">
+            Industry
+          </legend>
+          {% for choice in form.Industry.field.queryset %}
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" name="Industry" value="{{choice.id }}"
+                {% if choice in org.Industry.all %} checked="checked" {% endif %}>
+              {{choice}}
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- ServiceCategory -->
+        <div class="form-group">
+          <legend class="col-form-label">
+            Service
+          </legend>
+          {% for choice in form.ServiceCategory.field.queryset %}
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" name="ServiceCategory" value="{{ choice.id }}"
+                {% if choice in org.ServiceCategory.all %} checked="checked" {% endif %}>
+              {{choice}}
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- TargetCompanySize -->
+        {% for error in form.TargetCompanySize.error %}
+          {{ error }}
+        {% endfor %}
+        <div class="form-group">
+          <legend class="col-form-label">
+            Target Company Size
+          </legend>
+          {% for choice in form.TargetCompanySize.field.queryset %}
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" name="TargetCompanySize" value="{{ choice.id }}"
+                {% if choice in org.TargetCompanySize.all %} checked="checked" {% endif %}>
+              {{choice}}
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- PR -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.PR.label }}</label>
+          {{ form.PR }}
+        </div>
+
+        <!-- Affiliation -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Affiliation.label }}</label>
+          {{ form.Affiliation }}
+        </div>
+
+        <!-- Office Hour -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.OfficeHour.label }}</label>
+          {{ form.OfficeHour }}
+        </div>
+
+        <!-- URL -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Url.label }}</label>
+          {{ form.Url }}
+        </div>
+
+
+        <!-- Contact Person -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.ContactPerson.label }}</label>
+          {{ form.ContactPerson }}
+        </div>
+
+        <!-- Email -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Email.label }}</label>
+          {{ form.Email }}
+        </div>
+
+        <!-- Telephone -->
+        <div class="form-group bmd-form-group">
+          <label class="bmd-label-floating">{{ form.Telephone.label }}</label>
+          {{ form.Telephone }}
+        </div>
+
+
+        <!-- button -->
+        <div class="text-center mt-5">
+          <input type="submit" name="" value="Submit" class="mb-5 mx-auto btn btn-outline-primary">
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  $('.datetimepicker').datetimepicker({
+    icons: {
+      time: "fa fa-clock-o",
+      date: "fa fa-calendar",
+      up: "fa fa-chevron-up",
+      down: "fa fa-chevron-down",
+      previous: 'fa fa-chevron-left',
+      next: 'fa fa-chevron-right',
+      today: 'fa fa-screenshot',
+      clear: 'fa fa-trash',
+      close: 'fa fa-remove'
+    },
+
+    format: 'YYYY-MM-DD',
+  });
+</script>
+
+{% endblock %}
